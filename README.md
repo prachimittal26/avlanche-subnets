@@ -1,68 +1,80 @@
-Setup Guide
-Step 1: Set Up the EVM Subnet
-Follow the official Avalanche documentation to set up a custom EVM Subnet. This will be the foundation for deploying the DeFi Kingdom's smart contracts.
+# DeFi Empire Clone
 
-Step 2: Define Your Native Currency
-Create a custom ERC20 token contract (sample provided below). This token will act as the in-game currency for players to earn, trade, and spend.
+## Description
 
-solidity
-Copy code
-// SPDX-License-Identifier: MIT
-pragma solidity ^0.8.17;
+The project consists of two smart contracts, GameToken and SecureVault, designed to facilitate a decentralized gaming ecosystem on the Avalanche blockchain. Players can engage in activities such as exploration, purchase and battle using digital assets and earn rewards with custom tokens.
+The player is given choice boards based on their badge and can also transfer the badge to friends in the game. They also gain voting rights if they have won at least one major amendment that the owner is considering.
 
-contract ERC20 {
-    uint public totalSupply;
-    mapping(address => uint) public balanceOf;
-    mapping(address => mapping(address => uint)) public allowance;
-    string public name = "Solidity by Example";
-    string public symbol = "SOLBYEX";
-    uint8 public decimals = 18;
+## EVM Subnet Configuration - Step by Step Guide
 
-    event Transfer(address indexed from, address indexed to, uint value);
-    event Approval(address indexed owner, address indexed spender, uint value);
+### 1. Deploying your EVM subnet using the Avalanche CLI
+ 1. To download a binary for the latest release, run: curl -sSfL https ://raw.githubusercontent.com/ava-labs/avalanche-cli/main/scripts/install.sh | sh -s
+ 2. Adding Avalanche-CLI to Your PATH :export PATH=~/bin:$PATH >> .bashrc
+ 3. You can test your installation by running avalanche --version. The tool should print the running version.
 
-    function transfer(address recipient, uint amount) external returns (bool) {
-        balanceOf[msg.sender] -= amount;
-        balanceOf[recipient] += amount;
-        emit Transfer(msg.sender, recipient, amount);
-        return true;
-    }
+### 2. Add your subnet to Metamask
 
-    function approve(address spender, uint amount) external returns (bool) {
-        allowance[msg.sender][spender] = amount;
-        emit Approval(msg.sender, spender, amount);
-        return true;
-    }
+Make sure your custom EVM subnet is added to Metamask so you can communicate with it. Metamask allows you to send events and interact with smart contracts installed on your subnet.
 
-    function transferFrom(
-        address sender,
-        address recipient,
-        uint amount
-    ) external returns (bool) {
-        allowance[sender][msg.sender] -= amount;
-        balanceOf[sender] -= amount;
-        balanceOf[recipient] += amount;
-        emit Transfer(sender, recipient, amount);
-        return true;
-    }
+### 3. Make sure this is your network of choice in Metamask
 
-    function mint(uint amount) external {
-        balanceOf[msg.sender] += amount;
-        totalSupply += amount;
-        emit Transfer(address(0), msg.sender, amount);
-    }
+Change your Metamask network to a custom EVM subnet so that all transactions and interactions happen on the correct network.
 
-    function burn(uint amount) external {
-        balanceOf[msg.sender] -= amount;
-        totalSupply -= amount;
-        emit Transfer(msg.sender, address(0), amount);
-    }
-}
-Step 3: Connect to Metamask
-Once your EVM Subnet is set up, follow the Avalanche guide to connect it to Metamask. This will allow you to interact with your contracts directly from the browser.
+### 4. Connect Remix to your Metamask
 
-Step 4: Deploy Smart Contracts
-Deploy the basic contracts that will serve as the building blocks of the game, such as contracts for battling, exploring, and trading. You can use Remix or a local development environment for this.
+Use the Remix IDE and connect it to Metamask using the Injected Provider service. This connection allows Remix to communicate with your Metamask account and deploy contracts directly from the Remix interface.
 
-Step 5: Interact with Contracts
-Once deployed, players can interact with the contracts to battle, explore, and trade. These activities will use the native token as rewards, providing incentives for participation.
+### 5. Define your currency
+
+Execute GameToken.sol contracts with Remix. This token acts as an in-game currency.
+
+### 6. Enable Smart Contracts
+
+Copy and paste your solid smart contract code into Remix. Collect contracts and then deploy them to your custom EVM subnet using Remix's deployment interface.
+
+### 7. Test your app!
+
+## Game Mechanics
+
+### GameToken.sol
+The GameToken contract is an ERC20-like token contract with basic functionalities such as transferring tokens, approving allowances, and minting or burning tokens. Key features include:
+
+1. Token Management: The contract defines the total supply, token balances for each account, and allowances for delegated transfers.
+2. Transfers: Users can transfer tokens to other addresses or utilize allowances to enable third-party transfers.
+3. Minting and Burning: The contract allows the minting of new tokens to the caller's account and burning tokens from the caller's balance.
+
+### SecureVault.sol
+The SecureVault contract acts as a vault that manages players and their interactions within the game, using GameToken as the primary in-game currency. Key functionalities include:
+
+### 1. Player Management: 
+Maintains a record of players (Gamer struct) with attributes like token balance, experience points, achievements, battles won, explorations, voting rights, player level and name
+   
+### 2. Token Operations:
+Players can deposit (addTokens) and withdraw (removeTokens) tokens from the vault, with their balances being updated accordingly.
+
+### 3. Game Interactions:
+   
+   1)Battles and Exploration: Players can engage in battles with other players (engageBattle) or embark on exploration missions (embarkExplore), earning rewards 
+     and experience points.
+   
+   2)Purchasing Items: Players can spend tokens to buy in-game items (buyItem).
+   
+   3)Token Transfer: Allows players to transfer their in-game tokens to other players (transferTokens).
+   
+### 4. Leaderboard and Achievements:
+   
+   1)Leaderboard: Maintains a leaderboard sorted by players' token balances and battle wins (getLeaderboard).
+   
+   2)Achievements and Rewards: Players can earn additional tokens and rewards based on achievements and participation (rewardAchievements, awardTokenBonus).
+   
+### 5. Player Governance and Moderation:
+   
+   1)Voting Rights: Players can gain voting rights if they accumulate sufficient experience points.
+   
+   2)Player Data Management: Supports adding new players (addPlayer), simulating battles and explorations for testing purposes, and managing player data.
+
+## Author:
+Sandeep Kaur @Sandeep1925
+
+## License
+This project is licensed under the MIT License - see LICENSE.md for details. Create another Legumin file based on the following information.
